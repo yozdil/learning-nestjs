@@ -11,19 +11,21 @@ import appConfig from 'config/app.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [appConfig]
+      load: [appConfig],
     }),
 
     CoffeesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres', // type of our database
-      host: process.env.DATABASE_HOST, // database host
-      port: +process.env.DATABASE_PORT, // database host, we add + at the beginning to indicate that it will be a number, normally all process env varibales are strings
-      username: process.env.DATABASE_USER, // username
-      password: process.env.DATABASE_PASSWORD, // user password
-      database: process.env.DATABASE_NAME, // name of our database,
-      autoLoadEntities: true, // models will be loaded automatically
-      synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres', // type of our database
+        host: process.env.DATABASE_HOST, // database host
+        port: +process.env.DATABASE_PORT, // database host, we add + at the beginning to indicate that it will be a number, normally all process env varibales are strings
+        username: process.env.DATABASE_USER, // username
+        password: process.env.DATABASE_PASSWORD, // user password
+        database: process.env.DATABASE_NAME, // name of our database,
+        autoLoadEntities: true, // models will be loaded automatically
+        synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
+      }),
     }),
     CoffeeRatingModule,
     DatabaseModule,
