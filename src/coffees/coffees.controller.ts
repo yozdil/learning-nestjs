@@ -12,6 +12,7 @@ import {
   SetMetadata,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -19,6 +20,7 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(
@@ -27,6 +29,7 @@ export class CoffeesController {
   ) {}
 
   // @SetMetadata('isPublic', true)
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
